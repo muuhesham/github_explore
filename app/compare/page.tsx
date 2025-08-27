@@ -54,86 +54,34 @@ export default function compare() {
   };
 
   return (
-    <div
-      style={{
-        margin: "100px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h1
-        style={{
-          padding: "3rem",
-        }}
-      >
-        Compare Two GitHub Users
-      </h1>
+    <div className="compare-container">
+      <h1 className="compare-title">Compare Two GitHub Users</h1>
+
       <input
         type="text"
         placeholder="Enter First GitHub Username..."
         value={user1}
         onChange={(e) => setUser1(e.target.value)}
-        style={{
-          width: "50%",
-          padding: "1rem",
-          fontSize: "1rem",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          borderColor: "black",
-        }}
+        className="compare-input"
       />
+
       <input
         type="text"
         placeholder="Enter Second GitHub Username..."
         value={user2}
         onChange={(e) => setUser2(e.target.value)}
-        style={{
-          width: "50%",
-          padding: "1rem",
-          fontSize: "1rem",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          borderColor: "black",
-          marginTop: "5px",
-        }}
+        className="compare-input"
       />
-      <button
-        type="submit"
-        onClick={handleCompare}
-        style={{
-          width: "20%",
-          padding: "1rem",
-          marginTop: "40px",
-          fontSize: "1rem",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          borderColor: "black",
-          backgroundColor: "teal",
-          cursor: "pointer",
-        }}
-      >
+
+      <button type="submit" onClick={handleCompare} className="compare-btn">
         Compare
       </button>
 
       {data && (
-        <table
-          border={1}
-          cellPadding={24}
-          style={{
-            margin: "auto",
-            marginTop: "40px",
-            width: "80%",
-            height: "20vh",
-            fontSize: "1.2rem",
-            borderCollapse: "collapse",
-            textAlign: "center",
-          }}
-        >
+        <table className="compare-table">
           <thead>
             <tr>
-              <th style={{ padding: "16px" }}>Metrics</th>
+              <th>Metrics</th>
               <th>{data.userData1.login}</th>
               <th>{data.userData2.login}</th>
             </tr>

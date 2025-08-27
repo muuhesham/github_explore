@@ -10,7 +10,6 @@ export default function home() {
   const [userNotes, setUserNotes] = useState<{ [key: string]: string }>({});
   const [aiSummary, setAiSummary] = useState("");
 
-
   const handleSearch = async () => {
     if (!username) return alert("Please add GitHub Username!");
 
@@ -18,13 +17,12 @@ export default function home() {
     const json = await res.json();
     setUser(json);
     handleAISummary(json);
-    
+
     const reposRes = await fetch(
       `https://api.github.com/users/${username}/repos`
     );
     const reposJson = await reposRes.json();
     setRepos(reposJson);
-
   };
 
   const handleUsernote = () => {
@@ -68,69 +66,24 @@ export default function home() {
   };
 
   return (
-    <div
-      style={{
-        margin: "100px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h1
-        style={{
-          padding: "3rem",
-        }}
-      >
-        GitHub Profile Explorer
-      </h1>
+    <div className="container">
+      <h1>GitHub Profile Explorer</h1>
       <input
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key == "Enter") {
-            handleSearch();
-          }
+          if (e.key == "Enter") handleSearch();
         }}
         placeholder="Enter GitHub username..."
-        style={{
-          width: "50%",
-          padding: "1rem",
-          fontSize: "1rem",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          borderColor: "black",
-        }}
       />
-      <button
-        type="submit"
-        onClick={handleSearch}
-        style={{
-          width: "20%",
-          padding: "1rem",
-          marginTop: "20px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          borderColor: "black",
-          backgroundColor: "teal",
-          cursor: "pointer",
-          fontWeight: "bold",
-          fontSize: "16px",
-        }}
-      >
+      <button type="submit" onClick={handleSearch}>
         Search
       </button>
 
       {user && (
-        <div style={{ marginTop: "2rem", textAlign: "center" }}>
-          <img
-            src={user.avatar_url}
-            alt="avatar"
-            width={120}
-            style={{ borderRadius: "50%" }}
-          />
-
+        <div className="profile">
+          <img src={user.avatar_url} alt="avatar" />
           <h2>{user.name || user.login}</h2>
           <p>{user.bio}</p>
           <p>
@@ -140,98 +93,42 @@ export default function home() {
           <p>Company: {user.company || "Not found"}</p>
           <p>Location: {user.location || "Not found"}</p>
 
-          <button
-            onClick={() => handleUsernote()}
-            style={{
-              marginTop: "5px",
-              padding: "8px",
-              borderRadius: "5px",
-              border: "none",
-              backgroundColor: "teal",
-              cursor: "pointer",
-            }}
-          >
-            Add note about user
-          </button>
-          <br></br>
-          <br></br>
-          <span
-            style={{
-              fontSize: "20px",
-              color: "teal",
-              fontWeight: "bold",
-            }}
-          >
+          <button onClick={() => handleUsernote()}>Add note about user</button>
+          <p className="note">
             Your Last Notes:{" "}
             {userNotes[user.login] ||
               localStorage.getItem(user.login) ||
               "No notes yet!"}
-          </span>
+          </p>
         </div>
       )}
 
       {aiSummary && (
-        <div
-          style={{
-            marginTop: "2rem",
-            backgroundColor: "#f0f0f0",
-            padding: "1rem",
-            borderRadius: "8px",
-            color: "black"
-          }}
-        >
+        <div className="ai-summary">
           <h3>AI Summary & Analysis</h3>
           <p>{aiSummary}</p>
         </div>
       )}
 
       {repos.length > 0 && (
-        <div
-          style={{
-            marginTop: "2rem",
-            width: "60%",
-            textAlign: "center",
-            backgroundColor: "teal",
-            borderRadius: "10px",
-            padding: "10px",
-          }}
-        >
+        <div className="repos">
           <h3>Repositories:</h3>
           <ul style={{ listStyle: "none", padding: 0 }}>
             {repos.map((repo) => (
-              <li key={repo.id} style={{ marginBottom: "1rem" }}>
+              <li key={repo.id} className="repo-item">
                 <strong>{repo.name}</strong> ⭐ {repo.stargazers_count}
                 <br />
                 {repo.description || "No description"}
-                <br></br>
-                <br></br>
-                <button
-                  onClick={() => handleReponote(repo)}
-                  style={{
-                    padding: "8px",
-                    borderRadius: "5px",
-                    border: "none",
-                    cursor: "pointer",
-                    backgroundColor: "black",
-                  }}
-                >
+                <br />
+                <button onClick={() => handleReponote(repo)}>
                   Add note about Repo
                 </button>
-                <br></br>
-                <br></br>
-                <span
-                  style={{
-                    marginTop: "10px",
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Your last Notes:{" "}
+                <p className="note">
+                  Your Last Notes:{" "}
                   {repoNotes[repo.id] ||
                     localStorage.getItem(repo.id) ||
                     "No notes yet!"}
-                </span>
+                </p>
               </li>
             ))}
           </ul>
